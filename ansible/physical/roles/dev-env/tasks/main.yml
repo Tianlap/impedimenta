@@ -34,6 +34,7 @@
     name: aur
   vars:
     aur_packages:
+      - bandwidth
       - entr
       - python-rst2pdf
       - python36
