@@ -4,8 +4,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from movie_recommender import db, exceptions
+from movie_recommender import exceptions
 from movie_recommender.constants import DATASETS
+from movie_recommender.db import common, init
 
 
 def main():
@@ -31,11 +32,11 @@ def parse_args():
 def handle_create(args):
     """Handle the "create" subcommand."""
     if args.overwrite:
-        path = Path(db.get_save_path())
+        path = Path(common.get_save_path())
         if path.exists():
             path.unlink()
     try:
-        db.create_populate_db(args.dataset)
+        init.cpop_db(args.dataset)
     except (
             exceptions.DatabaseAlreadyExistsError,
             exceptions.DatasetAbsentError) as err:
@@ -46,14 +47,14 @@ def handle_create(args):
 def handle_load_path(args):  # pylint:disable=unused-argument
     """Handle the "load-path" subcommand."""
     try:
-        print(db.get_load_path())
+        print(common.get_load_path())
     except exceptions.DatabaseNotFoundError:
         exit(1)
 
 
 def handle_save_path(args):  # pylint:disable=unused-argument
     """Handle the "save-path" subcommand."""
-    print(db.get_save_path())
+    print(common.get_save_path())
 
 
 def _add_create_subcommand(subparsers):

@@ -15,9 +15,14 @@ help:
 	@echo "  lint-pylint"
 	@echo "    to run the pylint linter"
 	@echo "  test"
+	@echo "    to run all tests"
+	@echo "  test-functional"
+	@echo "    to run functional tests (will temporarily move current database"
+	@echo "    to /tmp)"
+	@echo "  test-unit"
 	@echo "    to run unit tests"
 
-all: test lint docs-clean docs-html
+all: lint test docs-clean docs-html
 
 docs-clean:
 	@cd docs; $(MAKE) clean
@@ -34,10 +39,15 @@ lint-flake8:
 	flake8 . --ignore E501,F401 --exclude docs/_build
 
 lint-pylint:
-	pylint docs/conf.py movie_recommender setup.py tests
+	pylint docs/conf.py movie_recommender setup.py tests/functional tests/unit
 
-test:
-	python3 -m unittest discover --start-directory tests --top-level-directory .
+test: test-unit test-functional
+
+test-functional:
+	python3 -m unittest discover --start-directory tests/functional --top-level-directory .
+
+test-unit:
+	python3 -m unittest discover --start-directory tests/unit --top-level-directory .
 
 .PHONY: help \
 	all \
@@ -47,3 +57,5 @@ test:
 	lint-flake8 \
 	lint-pylint \
 	test \
+	test-functional \
+	test-unit

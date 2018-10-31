@@ -12,6 +12,9 @@ from the source code.
 .. toctree::
 
     api/movie_recommender
+    api/movie_recommender.analyze
+    api/movie_recommender.analyze.ii
+    api/movie_recommender.analyze.ml
     api/movie_recommender.cli
     api/movie_recommender.cli.mr_analyze
     api/movie_recommender.cli.mr_dataset
@@ -23,12 +26,29 @@ from the source code.
     api/movie_recommender.constants
     api/movie_recommender.datasets
     api/movie_recommender.db
+    api/movie_recommender.db.calc
+    api/movie_recommender.db.common
+    api/movie_recommender.db.count
+    api/movie_recommender.db.init
+    api/movie_recommender.db.read
+    api/movie_recommender.db.write
     api/movie_recommender.exceptions
     api/movie_recommender.graph
     api/movie_recommender.predict
+    api/movie_recommender.predict.common
+    api/movie_recommender.predict.ii
+    api/movie_recommender.predict.ml
     api/movie_recommender.recommend
-    api/tests
-    api/tests.test_cli_mr_graph
-    api/tests.test_db
-    api/tests.test_graph
-    api/tests.utils
+    api/movie_recommender.recommend.ii
+    api/movie_recommender.recommend.ml
+    api/tests.functional
+    api/tests.functional.test_ii
+    api/tests.functional.test_ml
+    api/tests.functional.utils
+    api/tests.unit
+    api/tests.unit.test_cli_mr_graph
+    api/tests.unit.test_db_common
+    api/tests.unit.test_db_read
+    api/tests.unit.test_graph
+    api/tests.unit.test_predict_ii
+    api/tests.unit.utils

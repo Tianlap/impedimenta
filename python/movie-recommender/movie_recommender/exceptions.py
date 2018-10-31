@@ -28,6 +28,18 @@ class EmptyGraphError(Exception):
     """Indicates that a graph is empty."""
 
 
+class MissingAverageRatingError(Exception):
+    """Indicates that the average of a user's ratings hasn't been computed."""
+
+
+class MissingSimilarityError(Exception):
+    """Indicates that similarity hasn't been computed for a pair of movies."""
+
+
+class NoMovieRatingsError(Exception):
+    """Indicates that no ratings have been given to a movie."""
+
+
 class NoMovieYearError(Exception):
     r"""Indicates that a movie doesn't have a release year.
 
@@ -38,6 +50,10 @@ class NoMovieYearError(Exception):
         grep -Pv '\(\d{4}\)' …/movies.csv | wc -l  # 14
 
     """
+
+
+class NoSimilarMoviesError(Exception):
+    """Indicates that there are no movies similar to a given movie."""
 
 
 class NoSuchPredictorError(Exception):
