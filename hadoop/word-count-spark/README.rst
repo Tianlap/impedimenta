@@ -13,7 +13,4 @@ Workflow for lemuria.cis.vtc.edu:
     hadoop fs -ls '/user/jaudet/output'
     hadoop fs -rm -r '/user/jaudet/output'
 
-``scripts/run-app.sh`` references ``~/jars/``, which isn't automatically created
-or populated.
-
 .. _Apache Spark: http://spark.apache.org/
