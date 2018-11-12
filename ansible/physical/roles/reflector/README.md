@@ -1,8 +1,13 @@
 reflector
 =========
 
-Install [reflector](https://wiki.archlinux.org/index.php/Reflector). Install and
-enable units to periodically run it.
+Periodically update pacman's mirrorlist.
+
+Uses [reflector](https://wiki.archlinux.org/index.php/Reflector). Installs the
+following units:
+
+* `update-mirrorlist.service`
+* `update-mirrorlist.timer`
 
 Example Playbook
 ----------------
