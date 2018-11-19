@@ -8,6 +8,7 @@
       - ctags
       - git
       - graphviz
+      - ipv6calc
       - jdk8-openjdk
       - namcap
       - pacman-contrib
