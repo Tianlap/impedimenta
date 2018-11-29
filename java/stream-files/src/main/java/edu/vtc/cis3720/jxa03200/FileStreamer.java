@@ -6,11 +6,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /** Tools for finding and reading files. */
-public class FileStreamer {
+public final class FileStreamer {
+
+    /** Do nothing. Prevent this class from being subclassed. */
+    private FileStreamer() { }
+
     /**
      * Recursively find and return files.
      *
@@ -25,11 +28,11 @@ public class FileStreamer {
      * @param top A directory or file to search through.
      * @return A stream of files.
      */
-    public static Stream<File> getFiles(File top) {
-        if(top.isDirectory()) {
+    public static Stream<File> getFiles(final File top) {
+        if (top.isDirectory()) {
             return Stream.of(top.listFiles()).flatMap(file -> getFiles(file));
         }
-        if(top.canRead()) {
+        if (top.canRead()) {
             return Stream.of(top);
         }
         return Stream.empty();
@@ -50,13 +53,15 @@ public class FileStreamer {
      * opened for reading.
      * @throws IOException If an I/O error occurs.
      */
-    public static Stream<String> getWords(File file)
+    public static Stream<String> getWords(final File file)
     throws FileNotFoundException, IOException {
         String text = "";
-        try(FileReader fileReader = new FileReader(file)) {
-            try(BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+        try (FileReader fileReader = new FileReader(file)) {
+            try (
+                    BufferedReader bufferedReader =
+                    new BufferedReader(fileReader)) {
                 int codePoint = bufferedReader.read();
-                while(codePoint != -1) {
+                while (codePoint != -1) {
                     text += String.valueOf((char) codePoint);
                     codePoint = bufferedReader.read();
                 }
@@ -74,7 +79,7 @@ public class FileStreamer {
      * @param text A string to extract words from.
      * @return A stream of words.
      */
-    public static Stream<String> getWords(String text) {
+    public static Stream<String> getWords(final String text) {
         return Stream.of(text.split("\\s+")).filter(s -> !s.equals(""));
     }
 }
