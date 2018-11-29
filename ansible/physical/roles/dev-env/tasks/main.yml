@@ -10,6 +10,7 @@
       - graphviz
       - ipv6calc
       - jdk8-openjdk
+      - maven
       - namcap
       - pacman-contrib
       - python-docutils  # for rst2html
