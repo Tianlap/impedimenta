@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+# mypy already checks method signatures, and it does so better than pylint.
+# Notably, pylint incorrectly warns about methods that abide by the Liskov
+# substitution principle.
+disable=arguments-differ
