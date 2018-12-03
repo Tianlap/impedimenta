@@ -8,9 +8,7 @@
     - name: Create user {{ item }}
       user:
         name: '{{ item }}'
-        groups:
-          - docker
-          - libvirt
+        groups: libvirt
       register: result
 
     # It would be better to do this as a handler.

@@ -29,22 +29,11 @@ amelanchier.ichimonji10.name
 beech.ichimonji10.name
 pine.ichimonji10.name
 
-# These systems host virtual machines of some kind.
-[virt-hosts]
-
-[virt-hosts:children]
-vm-hosts
-docker-hosts
-
 # These systems host qemu-kvm VMs.
 [vm-hosts]
 beech.ichimonji10.name
 pine.ichimonji10.name
 tupelo.ichimonji10.name
-
-# These system host Docker VMs.
-[docker-hosts]
-pine.ichimonji10.name
 
 # These systems are headless, have high uptime, and have remote management
 # capabilities.

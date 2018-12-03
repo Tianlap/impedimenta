@@ -8,11 +8,6 @@
       - wheel
   become: true
 
-- name: Append "docker" to the list of groups
-  set_fact:
-    user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['docker'] }}"
-  when: "'docker-hosts' in group_names"
-
 # "Members of the libvirt group have passwordless access to the RW daemon socket
 # by default." See: https://wiki.archlinux.org/index.php/Libvirt#Using_polkit
 - name: Append "libvirt" to the list of groups
