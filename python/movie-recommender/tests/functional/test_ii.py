@@ -25,36 +25,37 @@ class AnalyzeTestCase(unittest.TestCase):
     # The lack of self.assertX() calls is OK, as run() will raise an exception
     # if any non-zero return codes are discovered. Furthermore, unittest
     # dictates that tests be written as methods, not functions.
+    # pylint:disable=no-self-use
 
-    def test_no_params(self):  # pylint:disable=no-self-use
+    def test_no_params(self):
         """Don't pass any parameters."""
         run(('mr-analyze', 'ii'))
 
-    def test_overwrite(self):  # pylint:disable=no-self-use
+    def test_overwrite(self):
         """Pass ``--overwrite``."""
         run(('mr-analyze', 'ii', '--overwrite'))
 
-    def test_no_overwrite(self):  # pylint:disable=no-self-use
+    def test_no_overwrite(self):
         """Pass ``--no-overwrite``."""
         run(('mr-analyze', 'ii', '--no-overwrite'))
 
-    def test_progress(self):  # pylint:disable=no-self-use
+    def test_progress(self):
         """Pass ``--progress``."""
         run(('mr-analyze', 'ii', '--overwrite', '--progress'))
 
-    def test_no_progress(self):  # pylint:disable=no-self-use
+    def test_no_progress(self):
         """Pass ``--no-progress``."""
         run(('mr-analyze', 'ii', '--overwrite', '--no-progress'))
 
-    def test_movie_ids(self):  # pylint:disable=no-self-use
+    def test_movie_ids(self):
         """Pass ``--movie-ids``."""
         run(('mr-analyze', 'ii', '--movie-ids', '1', '2', '--overwrite'))
 
-    def test_user_ids(self):  # pylint:disable=no-self-use
+    def test_user_ids(self):
         """Pass ``--user-ids``."""
         run(('mr-analyze', 'ii', '--user-ids', '1', '2', '--overwrite'))
 
-    def test_movie_ids_user_ids(self):  # pylint:disable=no-self-use
+    def test_movie_ids_user_ids(self):
         """Pass ``--movie-ids`` and ``--user-ids``."""
         run((
             'mr-analyze', 'ii',
@@ -63,11 +64,11 @@ class AnalyzeTestCase(unittest.TestCase):
             '--overwrite'
         ))
 
-    def test_jobs_1(self):  # pylint:disable=no-self-use
+    def test_jobs_1(self):
         """Pass ``--jobs 1``."""
         run(('mr-analyze', 'ii', '--overwrite', '--jobs', '1'))
 
-    def test_jobs_2(self):  # pylint:disable=no-self-use
+    def test_jobs_2(self):
         """Pass ``--jobs 2``."""
         run(('mr-analyze', 'ii', '--overwrite', '--jobs', '2'))
 

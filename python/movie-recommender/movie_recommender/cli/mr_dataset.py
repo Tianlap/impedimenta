@@ -66,10 +66,7 @@ def add_present_subcommand(subparsers):
     parser.set_defaults(func=handle_present)
 
 
-# The dispatching technique in main() is elegant enough (read: low-maintenance)
-# that some wastefulness is OK. See:
-# https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_subparsers
-def handle_absent(args):  # pylint:disable=unused-argument
+def handle_absent(_):
     """Handle the "absent" subcommand."""
     datasets = get_installed_datasets()
     absent_dataset_names = set(DATASETS.keys()) - set(datasets.keys())
