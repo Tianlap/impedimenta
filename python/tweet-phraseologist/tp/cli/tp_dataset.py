@@ -12,7 +12,7 @@ def main() -> None:
     # The `dest` argument is a workaround for a bug in argparse. See:
     # https://stackoverflow.com/questions/23349349/argparse-with-required-subparser
     parser = argparse.ArgumentParser(
-        description='Manage Tweet Phraseologist data sets.',
+        description='Manage datasets.',
         epilog="""\
         A dataset is a corpus of tweets in CSV format, possibly spread across
         multiple CSV files. A dataset is installed if it's in a

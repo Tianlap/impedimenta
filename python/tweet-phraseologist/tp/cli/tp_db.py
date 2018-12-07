@@ -13,9 +13,7 @@ def main() -> None:
     """Parse arguments and call business logic."""
     # The `dest` argument is a workaround for a bug in argparse. See:
     # https://stackoverflow.com/questions/23349349/argparse-with-required-subparser
-    parser = argparse.ArgumentParser(
-        description="Manage Tweet Phraseologist's database.",
-    )
+    parser = argparse.ArgumentParser(description='Manage database.')
     subparsers = parser.add_subparsers(dest='subcommand', required=True)
     add_cpop_subcommand(subparsers)
     add_load_path_subcommand(subparsers)
