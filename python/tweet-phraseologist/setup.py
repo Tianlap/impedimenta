@@ -43,7 +43,7 @@ setup(
     package_data={
         'tp': ['static/*'],
     },
-    install_requires=['pyxdg'],
+    install_requires=['nltk', 'pyxdg'],
     extras_require={
         'dev': [
             # For `make lint`
@@ -59,7 +59,6 @@ setup(
             'tp-analyze=tp.cli.tp_analyze:main',
             'tp-dataset=tp.cli.tp_dataset:main',
             'tp-db=tp.cli.tp_db:main',
-            'tp-recommend=tp.cli.tp_recommend:main',
         ]
     },
 )

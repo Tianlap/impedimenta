@@ -3,11 +3,13 @@
 import abc
 import csv
 import importlib
+import multiprocessing
+import re
 import shutil
 import tempfile
 import zipfile
 from pathlib import Path, PurePath
-from typing import IO, Mapping, Optional, Set
+from typing import IO, List, Mapping, Optional, Set, Tuple
 
 import pkg_resources
 from xdg import BaseDirectory
@@ -97,6 +99,9 @@ class DVRTDataset(Dataset):
         https://www.kaggle.com/kapastor/democratvsrepublicantweets
     """
 
+    _trunc_matcher = re.compile(r'(.+)\s+\S*…', flags=re.DOTALL)
+    _url_matcher = re.compile(r'\s+https://t.co/\S+')
+
     @property
     def archive(self) -> str:
         """Return the name of the archive containing this dataset."""
@@ -142,12 +147,20 @@ class DVRTDataset(Dataset):
             with zipfile.ZipFile(archive, 'r') as handle:
                 handle.extractall(tmp)
 
-            # Fix files.
+            # Fix TwitterHandles.csv.
             infile_path = Path(tmp, 'TwitterHandles.csv')
             outfile_path = Path(tmp, 'FixedTwitterHandles.csv')
             with open(infile_path) as infile:
                 with open(outfile_path, 'w') as outfile:
                     self.munge_twitter_handles(infile, outfile)
+            shutil.move(outfile_path, infile_path)
+
+            # Fix ExtractedTweets.csv.
+            infile_path = Path(tmp, 'ExtractedTweets.csv')
+            outfile_path = Path(tmp, 'FixedExtractedTweets.csv')
+            with open(infile_path) as infile:
+                with open(outfile_path, 'w') as outfile:
+                    self.munge_extracted_tweets(infile, outfile)
             shutil.move(outfile_path, infile_path)
 
             # Install fixed files.
@@ -188,6 +201,66 @@ class DVRTDataset(Dataset):
 
             # write original row
             writer.writerow(row)
+
+    @classmethod
+    def munge_extracted_tweets(cls, infile: IO[str], outfile: IO[str]) -> None:
+        """Fix the ``ExtractedTweets.csv`` file.
+
+        The file contains many truncated tweets, ending with text such as the
+        following::
+
+            here in the House… https://t.co/n3tggDLU1L
+            National Teacher Apprecia…
+
+        These suffixes harm subsequent analyses, by making tasks such sentence
+        splitting, word splitting and stemming harder. Address this by
+        stripping said text. The above lines are fixed to end with::
+
+            here in the
+            National Teacher
+
+        In addition, URLs are embedded in many tweets, like this::
+
+            Deep bow from a Cavs fan! https://t.co/BD0xOh6TB3
+
+        Drop these URLs. The above would be changed to:
+
+            Deep bow from a Cavs fan!
+
+        This has the potential to screw up some legitimate tweets and drop a
+        few complete words, but short of getting a better dataset that doesn't
+        truncate tweets and append tweet URLs, this seems like a reasonable
+        solution.
+        """
+        reader = csv.reader(infile)
+        writer = csv.writer(outfile)
+        writer.writerow(next(reader))  # write header row
+        with multiprocessing.Pool() as pool:
+            # chunksize chosen empirically with an R7 1700 CPU
+            for row in pool.imap(
+                    func=cls.munge_row,
+                    iterable=reader,
+                    chunksize=2**8):
+                writer.writerow(row)
+
+    @classmethod
+    def munge_row(cls, row: List[str]) -> Tuple[str, ...]:
+        """Fix the tweet in the given row.
+
+        For details, see :meth:`munge_extracted_tweets`.
+        """
+        # Mutating `row` might be more efficient, but mutating inputs can cause
+        # hard-to-understand bugs. Better to work on a solution which avoids
+        # this issue, such as making it so that this method only accepted and
+        # returned a tweet.
+        old_tweet = row[-1]
+        truncated = re.search(cls._trunc_matcher, old_tweet)
+        if truncated:
+            new_tweet = truncated.group(1)
+        else:
+            new_tweet = old_tweet
+        new_tweet = re.sub(cls._url_matcher, '', new_tweet)
+        return tuple(row[:-1]) + (new_tweet,)
 
 
 class SimpleFixtureDataset(Dataset):

@@ -88,6 +88,6 @@ def parse_csv(
         from the input file.
     """
     for i, row in enumerate(csv.reader(handle)):
-        if i <= header_rows:
+        if i < header_rows:
             continue
         yield caster(row)

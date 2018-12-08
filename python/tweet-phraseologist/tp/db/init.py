@@ -49,6 +49,7 @@ def cpop_tweets_table(conn: sqlite3.Connection, csv_file: Path) -> None:
     with conn:
         conn.execute("""
             CREATE TABLE tweets (
+                party TEXT,
                 handle TEXT,
                 tweet TEXT
             )
@@ -57,8 +58,8 @@ def cpop_tweets_table(conn: sqlite3.Connection, csv_file: Path) -> None:
     with open(csv_file) as handle:
         with conn:
             conn.executemany(
-                'INSERT INTO tweets VALUES (?, ?)',
-                common.parse_csv(handle, lambda row: (row[1], row[2])),
+                'INSERT INTO tweets VALUES (?, ?, ?)',
+                common.parse_csv(handle),
             )
 
 
@@ -73,9 +74,9 @@ def cpop_handles_table(conn: sqlite3.Connection, csv_file: Path) -> None:
     with conn:
         conn.execute("""
             CREATE TABLE handles (
-                handle TEXT PRIMARY KEY,
+                party TEXT,
                 name TEXT,
-                party TEXT
+                handle TEXT PRIMARY KEY
             )
         """)
 
@@ -83,5 +84,5 @@ def cpop_handles_table(conn: sqlite3.Connection, csv_file: Path) -> None:
         with conn:
             conn.executemany(
                 'INSERT INTO handles VALUES (?, ?, ?)',
-                common.parse_csv(handle, lambda row: (row[2], row[1], row[0])),
+                common.parse_csv(handle, lambda row: row[:3]),
             )
