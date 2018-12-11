@@ -236,8 +236,10 @@ class DVRTDataset(Dataset):
         writer = csv.writer(outfile)
         writer.writerow(next(reader))  # write header row
         with multiprocessing.Pool() as pool:
-            # chunksize chosen empirically with an R7 1700 CPU
-            for row in pool.imap(
+            # Chunksize chosen empirically with an R7 1700 CPU.
+            # imap_unordered() used because row ordering doesn't affect
+            # correctness and ignoring ordering can improve performance.
+            for row in pool.imap_unordered(
                     func=cls.munge_row,
                     iterable=reader,
                     chunksize=2**8):
