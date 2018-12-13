@@ -2,12 +2,18 @@
 """A CLI tool to analyze tweets."""
 import argparse
 import csv
+import functools
 import sys
-from typing import Mapping, Tuple
+from typing import Callable, Mapping, Optional, Tuple
 
 from tp import analyze
 from tp.db import read
-from tp.cli.utils import add_jobs_flag, non_negative_int
+from tp.cli.utils import (
+    add_jobs_flag,
+    add_progress_flags,
+    non_negative_int,
+    report_progress,
+)
 
 
 def main() -> None:
@@ -20,6 +26,7 @@ def main() -> None:
         """,
     )
     add_jobs_flag(parser)
+    add_progress_flags(parser)
     default_count = 5
     parser.add_argument(
         '--count',
@@ -62,10 +69,20 @@ def main() -> None:
 
 def handle_root(args: argparse.Namespace) -> None:
     """Handle the root command."""
+    reporter: Optional[Callable]
+    if args.progress:
+        reporter = functools.partial(
+            report_progress,
+            prefix='Tweet analysis: ',
+        )
+    else:
+        reporter = None
+
     ngrams = analyze.count_ngrams_in_tweets(
         args.jobs,
         ngram_len=args.ngram_length,
         party=args.party,
+        reporter=reporter,
     )
     print_top_ngrams(ngrams, args.count)
 
@@ -74,11 +91,18 @@ def handle_root_unique(args: argparse.Namespace) -> None:
     """Handle the root command where ``--unique`` was passed."""
     # Calculate ngrams on a per-party basis.
     ngrams_by_party = {}
+    reporter: Optional[Callable] = None
     for party in read.parties():
+        if args.progress:
+            reporter = functools.partial(
+                report_progress,
+                prefix=f'Tweet analysis ({party}): ',
+            )
         ngrams_by_party[party] = analyze.count_ngrams_in_tweets(
             args.jobs,
             ngram_len=args.ngram_length,
             party=party,
+            reporter=reporter,
         )
 
     # Figure out which ngrams are unique to this party.

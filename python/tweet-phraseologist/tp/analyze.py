@@ -3,21 +3,22 @@
 import itertools
 import multiprocessing
 import unicodedata
-from typing import Dict, Iterable, Iterator, List, Optional, Tuple
+from typing import Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
 from nltk.stem.snowball import SnowballStemmer
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize.casual import TweetTokenizer
 from nltk.util import ngrams
 
-from tp.db import read
+from tp.db import count, read
 
 
 def count_ngrams_in_tweets(
         jobs: Optional[int],
         *,
         ngram_len: int,
-        party: Optional[str]) -> Dict[Tuple[str, ...], int]:
+        party: Optional[str],
+        reporter: Optional[Callable] = None) -> Dict[Tuple[str, ...], int]:
     """Find the top ngrams in the corpus of tweets.
 
     :param jobs: The number of processes to spawn. If ``None``, spawn one per
@@ -25,6 +26,10 @@ def count_ngrams_in_tweets(
     :param ngram_len: The length of ngrams.
     :param party: The party whose tweets should be analyze. If ``None``, all
         tweets are analyzed.
+    :param reporter: A function that reports progress to the user. Must accept
+        one argument, where that argument is a multiprocessing ``Connection``
+        object. Values from 0 to 1, inclusive, will be sent through the
+        connection.
     :return: A dict mapping each ngram to the number of times it appears within
         the corpus of tweets currently in the database.
     """
@@ -33,11 +38,11 @@ def count_ngrams_in_tweets(
         # chunksize chosen empirically with an R7 1700 CPU
         for ngram_counts in pool.imap_unordered(
                 func=call_cnit,
-                iterable=gen_cnit_args(ngram_len, party),
+                iterable=gen_cnit_args(ngram_len, party, reporter),
                 chunksize=2**5):
-            for ngram, count in ngram_counts.items():
+            for ngram, ncount in ngram_counts.items():
                 totals.setdefault(ngram, 0)
-                totals[ngram] += count
+                totals[ngram] += ncount
     return totals
 
 
@@ -48,10 +53,44 @@ def call_cnit(args):
 
 def gen_cnit_args(
         ngram_len: int,
-        party: Optional[str]) -> Iterator[Tuple[str, int]]:
-    """Generate arguments for :meth:`tp.analyze.count_ngrams_in_tweet`."""
+        party: Optional[str],
+        reporter: Optional[Callable] = None) -> Iterator[Tuple[str, int]]:
+    """Generate arguments for :meth:`tp.analyze.count_ngrams_in_tweet`.
+
+    :param ngram_len: Passed through to
+        :meth:`tp.analyze.count_ngrams_in_tweet`.
+    :param party: If specified, only yield tweets from the given party, instead
+        of all tweets.
+    :param reporter: A function that reports progress to the user. Must accept
+        one argument, where that argument is a multiprocessing ``Connection``
+        object. Values from 0 to 1, inclusive, will be sent through the
+        connection.
+    :return: A generator that yields tuples of arguments.
+    """
+    if reporter:
+        num_tweets: int = count.tweets(party)
+        tweets_yielded: int = 0
+
+        conn_out: multiprocessing.connection.Connection
+        conn_in: multiprocessing.connection.Connection
+        conn_out, conn_in = multiprocessing.Pipe(duplex=False)
+        proc: multiprocessing.Process = (
+            multiprocessing.Process(target=reporter, args=(conn_out,))
+        )
+        proc.start()
+
     for tweet in read.tweets(party):
         yield (tweet, ngram_len)
+
+        if reporter:
+            tweets_yielded += 1
+            if tweets_yielded % 2**8 == 0:
+                conn_in.send(tweets_yielded / num_tweets)
+
+    if reporter:
+        conn_in.send(1)
+        conn_in.close()
+        proc.join()
 
 
 def count_ngrams_in_tweet(
