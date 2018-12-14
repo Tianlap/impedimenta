@@ -50,6 +50,7 @@ setup(
             'flake8',
             'flake8-docstrings',
             'flake8-quotes',
+            'mypy',
             'pydocstyle',
             'pylint',
         ],
