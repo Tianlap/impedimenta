@@ -11,7 +11,6 @@
       - ipv6calc
       - jdk8-openjdk
       - maven
-      - mypy
       - namcap
       - pacman-contrib
       - python-docutils  # for rst2html
