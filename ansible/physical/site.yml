@@ -8,9 +8,9 @@
   - lm-sensors
   - locale
   - pkgfile
-  - reflector
   - smartd
   - time
+  - update-mirrorlist
   - user-ichimonji10
 
 - hosts: dev-hosts

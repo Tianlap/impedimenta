@@ -1,13 +1,14 @@
-reflector
-=========
+update-mirrorlist
+=================
 
 Periodically update pacman's mirrorlist.
 
-Uses [reflector](https://wiki.archlinux.org/index.php/Reflector). Installs the
-following units:
+Install the following units:
 
 * `update-mirrorlist.service`
 * `update-mirrorlist.timer`
+
+These units use [reflector](https://wiki.archlinux.org/index.php/Reflector).
 
 Example Playbook
 ----------------
@@ -15,5 +16,5 @@ Example Playbook
 ```yaml
 - hosts: all
   roles:
-    - reflector
+    - update-mirrorlist
 ```
