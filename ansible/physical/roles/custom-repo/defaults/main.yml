@@ -1,0 +1,9 @@
+---
+custom_repo_path_prefix: /srv/packages.example.com/arch-linux
+custom_repo_name: custom
+custom_repo_path: '{{ custom_repo_path_prefix }}/{{ custom_repo_name }}'
+custom_repo_db: '{{ custom_repo_path }}/{{ custom_repo_name }}.db.tar.xz'
+custom_repo_packages: []
+custom_repo_auto_update: true
+custom_repo_user: custom-repo-user
+custom_repo_user_home: /usr/local/lib/{{ custom_repo_user }}

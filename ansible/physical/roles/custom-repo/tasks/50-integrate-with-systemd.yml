@@ -1,0 +1,30 @@
+---
+- block:
+
+  - name: Install service to update custom repo
+    template:
+      src: update-repo@.service
+      dest: /etc/systemd/system/
+
+  - name: Install timer to update custom repo
+    copy:
+      src: update-repo@.timer
+      dest: /etc/systemd/system/
+
+  - name: Start and enable timer to update custom repo
+    systemd:
+      name: update-repo@{{ custom_repo_name }}.timer
+      state: started
+      enabled: true
+      daemon_reload: true
+    when: custom_repo_auto_update
+
+  - name: Stop and disable timer to update custom repo
+    systemd:
+      name: update-repo@{{ custom_repo_name }}.timer
+      state: stopped
+      enabled: false
+      daemon_reload: true
+    when: not custom_repo_auto_update
+
+  become: true

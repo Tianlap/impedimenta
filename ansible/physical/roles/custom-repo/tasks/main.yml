@@ -1,0 +1,9 @@
+---
+# The file number prefixes have no programmatic effect. They exist to improve
+# comprehensibility.
+- include_tasks: 10-create-user.yml
+- include_tasks: 20-install-aurutils.yml
+- include_tasks: 30-create-repo.yml
+- include_tasks: 40-compile-packages.yml
+  loop: '{{ custom_repo_packages }}'
+- include_tasks: 50-integrate-with-systemd.yml

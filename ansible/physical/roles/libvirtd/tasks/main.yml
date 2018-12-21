@@ -2,20 +2,14 @@
 - name: Install libvirt and related tools
   pacman:
     name:
-      - libvirt
-      - qemu  # libvirt backend
-      - openbsd-netcat  # libvirt management over ssh
-      - virt-install  # libvirt management via console (including virt-clone)
       - dnsmasq
+      - libguestfs
+      - libvirt
+      - openbsd-netcat  # libvirt management over ssh
+      - qemu  # libvirt backend
+      - virt-install  # libvirt management via console (including virt-clone)
   become: true
   notify: Set install reason for packages
-
-- name: Install AUR packages
-  include_role:
-    name: aur
-  vars:
-    aur_packages:
-      - libguestfs
 
 - block:
 

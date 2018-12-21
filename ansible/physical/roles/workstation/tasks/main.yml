@@ -7,7 +7,6 @@
       name:
         - mesa-vdpau
         - xf86-video-amdgpu
-      state: present
     when: "inventory_hostname == 'beech.ichimonji10.name'"
 
   # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
@@ -16,7 +15,6 @@
       name:
         - mesa-vdpau
         - xf86-video-amdgpu
-      state: present
     when: "inventory_hostname == 'tupelo.ichimonji10.name'"
 
   - name: Uninstall unused packages
@@ -37,6 +35,8 @@
     pacman:
       name:
         - audacious
+        - brother-hll2395dw
+        - brscan4
         - calibre
         - easytag
         - evince
@@ -54,6 +54,8 @@
         - lightdm-gtk-greeter-settings
         - lshw
         - lsof
+        - mnemosyne
+        - ms-sys
         - network-manager-applet
         - networkmanager
         - networkmanager-openvpn
@@ -76,21 +78,10 @@
         - xfce4
         - xfce4-goodies
         - xorg-server
-      state: present
+        - zoom
     notify: Set install reason for optional dependencies
 
   become: true
-
-- name: Install AUR packages
-  include_role:
-    name: aur
-  vars:
-    aur_packages:
-      - brother-hll2395dw
-      - brscan4
-      - mnemosyne
-      - ms-sys
-      - zoom
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.

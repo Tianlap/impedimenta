@@ -1,0 +1,24 @@
+---
+- block:
+
+  # A home directory is necessary so that aurutils can cache files in
+  # `~/.cache/`, and so that per-user systemd units may be created. (create_home
+  # defaults to true.)
+  - name: Create {{ custom_repo_user }}
+    user:
+      name: '{{ custom_repo_user }}'
+      home: '{{ custom_repo_user_home }}'
+      shell: /usr/bin/nologin
+      system: true
+    notify: Lock password
+
+  # Required by install-aurutils.sh. Possibly required by aurutils itself for
+  # building packages, but this is unclear.
+  - name: Give {{ custom_repo_user }} passwordless sudo privileges
+    template:
+      src: sudoers.d-entry
+      dest: /etc/sudoers.d/{{ custom_repo_user }}-user
+      validate: 'visudo --check --file %s'
+      mode: 0440
+
+  become: true

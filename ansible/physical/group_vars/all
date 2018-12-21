@@ -5,3 +5,36 @@ coworkers:
 - jwilkerson
 - kersom
 - ragbalak
+
+custom_repo_path_prefix: /srv/packages.ichimonji10.name/arch-linux
+custom_repo_name: ichi-public
+custom_repo_packages:
+  # dev-env
+  - bandwidth
+  - entr
+  - python-rst2pdf
+  - python36
+  - vim-badwolf-git
+  - vim-hemisu-git
+  - vim-mark
+  - vim-undotree
+  - yamllint
+
+  # libvirtd
+  - libguestfs
+
+  # mnemosyne
+  - mnemosyne
+
+  # subsonic
+  - subsonic
+
+  # uefi
+  - systemd-boot-pacman-hook
+
+  # workstation
+  - brother-hll2395dw
+  - brscan4
+  - mnemosyne
+  - ms-sys
+  - zoom

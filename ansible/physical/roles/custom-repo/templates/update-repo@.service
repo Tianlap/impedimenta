@@ -1,0 +1,12 @@
+# Use Wants instead of Requires in case network-online.target isn't correctly
+# configured.
+[Unit]
+Description=Update a custom repository of packages
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/aur sync --upgrades --database %i --chroot --no-view --no-confirm
+User={{ custom_repo_user }}
+Group={{ custom_repo_user }}

@@ -1,10 +1,8 @@
 ---
-- name: Install Subsonic
-  include_role:
-    name: aur
-  vars:
-    aur_packages:
-      - subsonic
+- name: Install subsonic
+  pacman:
+    name: subsonic
+  become: true
 
 - include_tasks: configure-subsonic.yml
 - include_tasks: configure-backups.yml

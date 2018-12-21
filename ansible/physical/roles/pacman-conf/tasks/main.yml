@@ -1,0 +1,28 @@
+---
+- block:
+
+  - name: 'Install /etc/pacman.d/null.conf'
+    copy:
+      src: 'null.conf'
+      dest: /etc/pacman.d/
+
+  # Routers shouldn't be consuming AUR packages.
+  #
+  # Webservers host custom repositories, and already have /etc/pacman.d/*.conf
+  # files defining how to access said custom repositories.
+  - name: Install /etc/pacman.d/ichi-public.conf
+    copy:
+      src: ichi-public.conf
+      dest: /etc/pacman.d/
+    notify: Sync pacman
+    when:
+      - '"routers" not in group_names'
+      - '"webservers" not in group_names'
+
+  - name: Install /etc/pacman.conf
+    copy:
+      src: pacman.conf
+      dest: /etc/pacman.conf
+    notify: Sync pacman
+
+  become: true

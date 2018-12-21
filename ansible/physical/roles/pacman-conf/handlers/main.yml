@@ -1,0 +1,5 @@
+---
+- name: Sync pacman
+  pacman:
+    update_cache: true
+  become: true

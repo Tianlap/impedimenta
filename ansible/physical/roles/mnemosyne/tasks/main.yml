@@ -1,12 +1,9 @@
 ---
-- name: Install mnemosyne
-  include_role:
-    name: aur
-  vars:
-    aur_packages:
-      - mnemosyne
-
 - block:
+
+    - name: Install mnemosyne
+      pacman:
+        name: mnemosyne
 
     - name: Install python-cheroot, for the mnemosyne sync server
       pacman:
