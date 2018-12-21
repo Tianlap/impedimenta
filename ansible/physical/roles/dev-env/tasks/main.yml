@@ -1,35 +1,44 @@
 ---
-- name: Install development tools
-  pacman:
-    name:
-      - ansible
-      - ansible-lint
-      - cmark
-      - ctags
-      - git
-      - graphviz
-      - ipv6calc
-      - jdk8-openjdk
-      - maven
-      - namcap
-      - pacman-contrib
-      - python-docutils  # for rst2html
-      - python-passlib  # for ansible's htpasswd module
-      - python-pylint
-      - python-wheel
-      - sbt
-      - scala
-      - shellcheck
-      - sshpass  # optional for ansible
-      - tmux
-      - twine
-      - vim
-      - vim-jellybeans
-      - vim-nerdtree
-      - vim-tagbar
-      - wget
+
+- block:
+
+  - name: Uninstall unused packages
+    pacman:
+      name:
+        - maven
+        - jdk8-openjdk
+        - sbt
+        - scala
+      state: absent
+
+  - name: Install development tools
+    pacman:
+      name:
+        - ansible
+        - ansible-lint
+        - cmark
+        - ctags
+        - git
+        - graphviz
+        - ipv6calc
+        - namcap
+        - pacman-contrib
+        - python-docutils  # for rst2html
+        - python-passlib  # for ansible's htpasswd module
+        - python-pylint
+        - python-wheel
+        - shellcheck
+        - sshpass  # optional for ansible
+        - tmux
+        - twine
+        - vim
+        - vim-jellybeans
+        - vim-nerdtree
+        - vim-tagbar
+        - wget
+    notify: Set install reason for optional dependencies
+
   become: true
-  notify: Set install reason for optional dependencies
 
 - name: Install development tools from the AUR
   include_role:

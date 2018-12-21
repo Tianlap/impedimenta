@@ -19,6 +19,14 @@
       state: present
     when: "inventory_hostname == 'tupelo.ichimonji10.name'"
 
+  - name: Uninstall unused packages
+    pacman:
+      name:
+        - chromium
+        - p7zip
+        - unrar
+      state: absent
+
   # NOTE: We assume base and base-devel are already present, and were enabled at
   # install time. Requiring it at a later time can be problematic if the
   # multilib repository is enabled.
@@ -30,7 +38,6 @@
       name:
         - audacious
         - calibre
-        - chromium
         - easytag
         - evince
         - exfat-utils
@@ -54,7 +61,6 @@
         - noto-fonts-emoji
         - ntfs-3g
         - openssh
-        - p7zip
         - pavucontrol
         - picocom
         - pulseaudio
@@ -64,7 +70,6 @@
         - system-config-printer
         - texlive-core  # for mnemosyne
         - ttf-dejavu
-        - unrar
         - virt-manager
         - vlc
         - xclip
