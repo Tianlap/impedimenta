@@ -1,20 +1,18 @@
 ---
 - block:
 
-    # TODO: Implement a filter that accepts custom_repo and returns a path.
-    - name: Create {{ custom_repo.path_prefix }}/{{ custom_repo.name }}
+    - name: Create {{ custom_repo | custom_repo_path }}
       file:
-        path: '{{ custom_repo.path_prefix }}/{{ custom_repo.name }}'
+        path: '{{ custom_repo | custom_repo_path }}'
         state: directory
         owner: '{{ custom_repos_user }}'
         group: '{{ custom_repos_user }}'
         mode: 0755
 
-    # TODO: Implement a filter that accepts custom_repo and returns a db path.
-    - name: Create {{ custom_repo.path_prefix }}/{{ custom_repo.name }}/{{ custom_repo.name }}.db.tar.xz
-      command: repo-add {{ custom_repo.path_prefix }}/{{ custom_repo.name }}/{{ custom_repo.name }}.db.tar.xz
+    - name: Create {{ custom_repo | custom_repo_db }}
+      command: repo-add {{ custom_repo | custom_repo_db }}
       args:
-        creates: '{{ custom_repo.path_prefix }}/{{ custom_repo.name }}/{{ custom_repo.name }}.db.tar.xz'
+        creates: '{{ custom_repo | custom_repo_db }}'
       become_user: '{{ custom_repos_user }}'
 
     - name: Create /etc/pacman.d/{{ custom_repo.name }}.conf
