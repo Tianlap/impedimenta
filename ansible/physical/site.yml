@@ -22,7 +22,6 @@
   - pkgfile
   - smartd
   - time
-  - update-mirrorlist
   - user-ichimonji10
 
 - hosts: dev-hosts

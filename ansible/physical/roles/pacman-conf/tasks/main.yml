@@ -3,7 +3,7 @@
 
   - name: 'Install /etc/pacman.d/null.conf'
     copy:
-      src: 'null.conf'
+      src: 'etc_pacman.d/null.conf'
       dest: /etc/pacman.d/
 
   # Routers shouldn't be consuming AUR packages.
@@ -12,7 +12,7 @@
   # files defining how to access said custom repositories.
   - name: Install /etc/pacman.d/ichi-public.conf
     copy:
-      src: ichi-public.conf
+      src: etc_pacman.d/ichi-public.conf
       dest: /etc/pacman.d/
     notify: Sync pacman
     when:
@@ -21,8 +21,24 @@
 
   - name: Install /etc/pacman.conf
     copy:
-      src: pacman.conf
+      src: etc/pacman.conf
       dest: /etc/pacman.conf
     notify: Sync pacman
+
+  - name: Install reflector
+    pacman:
+      name: reflector
+
+  - name: Install units to update mirrorlist
+    copy:
+      src: etc_systemd_system/
+      dest: /etc/systemd/system/
+
+  - name: Start and enable timer to update mirrorlist
+    systemd:
+      name: update-mirrorlist.timer
+      state: started
+      enabled: true
+      daemon_reload: true
 
   become: true
