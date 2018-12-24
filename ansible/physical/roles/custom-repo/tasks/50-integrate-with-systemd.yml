@@ -1,19 +1,35 @@
 ---
 - block:
 
+  # Try executing `systemctl list-unit-files | grep update`. You'll find that
+  # units named verb-noun are atypical, and units named noun-verb are typical.
+  - name: Delete outdated update-repo@ units
+    file:
+      path: /etc/systemd/system/update-repo@.{{ item }}
+      state: absent
+    loop:
+      - timer
+      - service
+    register: result
+
+  - name: Reload systemd
+    systemd:
+      daemon_reload: true
+    when: result is changed
+
   - name: Install service to update repository {{ custom_repo.name }}
     template:
-      src: update-repo@.service
+      src: repo-update@.service
       dest: /etc/systemd/system/
 
   - name: Install timer to update repository {{ custom_repo.name }}
     copy:
-      src: update-repo@.timer
+      src: repo-update@.timer
       dest: /etc/systemd/system/
 
   - name: Start and enable timer to update repository {{ custom_repo.name }}
     systemd:
-      name: update-repo@{{ custom_repo.name }}.timer
+      name: repo-update@{{ custom_repo.name }}.timer
       state: started
       enabled: true
       daemon_reload: true
@@ -21,7 +37,7 @@
 
   - name: Stop and disable timer to update repository {{ custom_repo.name }}
     systemd:
-      name: update-repo@{{ custom_repo.name }}.timer
+      name: repo-update@{{ custom_repo.name }}.timer
       state: stopped
       enabled: false
       daemon_reload: true
