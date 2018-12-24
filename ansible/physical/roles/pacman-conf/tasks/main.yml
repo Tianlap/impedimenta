@@ -29,14 +29,25 @@
     pacman:
       name: reflector
 
-  - name: Install units to update mirrorlist
+  - name: Install units to update the mirrorlist
     copy:
       src: etc_systemd_system/
       dest: /etc/systemd/system/
 
-  - name: Start and enable timer to update mirrorlist
+  - name: Start and enable timer to update the mirrorlist
     systemd:
       name: update-mirrorlist.timer
+      state: started
+      enabled: true
+      daemon_reload: true
+
+  - name: Install pacman-contrib (for paccache)
+    pacman:
+      name: pacman-contrib
+
+  - name: Start and enable timer to clean the package cache
+    systemd:
+      name: paccache.timer
       state: started
       enabled: true
       daemon_reload: true
