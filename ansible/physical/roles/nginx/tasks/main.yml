@@ -16,7 +16,10 @@
     htpasswd:
       name: admin
       password: '{{ transmission_password }}'
-      path: /etc/nginx/transmission_ichimonji10_name_downloads.htpasswd
+      path: >-
+        /etc/nginx/{{
+          'transmission.ichimonji10.name/downloads' | systemd_escape
+        }}.htpasswd
       owner: root
       group: http
       mode: 0640
@@ -27,14 +30,16 @@
       name: anonymous
       password: '{{ nginx_ichi_private_password }}'
       path: >-
-        /etc/nginx/packages.ichimonji10.name_arch-linux_ichi-private.htpasswd
+        /etc/nginx/{{
+          'packages.ichimonji10.name/arch-linux/ichi-private' | systemd_escape
+        }}.htpasswd
       owner: root
       group: http
       mode: 0640
     when: nginx_ichi_private_password is defined
 
   - name: Install nginx configuration file
-    copy:
+    template:
       src: nginx.conf
       dest: /etc/nginx/nginx.conf
     notify: Reload nginx
