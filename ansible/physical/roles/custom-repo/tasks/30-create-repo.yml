@@ -1,32 +1,33 @@
 ---
-# This is tricky. See the readme!
 - block:
 
-    - name: Create {{ custom_repo_path }}
+    # TODO: Implement a filter that accepts custom_repo and returns a path.
+    - name: Create {{ custom_repo.path_prefix }}/{{ custom_repo.name }}
       file:
-        path: '{{ custom_repo_path }}'
+        path: '{{ custom_repo.path_prefix }}/{{ custom_repo.name }}'
         state: directory
-        owner: '{{ custom_repo_user }}'
-        group: '{{ custom_repo_user }}'
+        owner: '{{ custom_repos_user }}'
+        group: '{{ custom_repos_user }}'
         mode: 0755
 
-    - name: Create {{ custom_repo_db }}
-      command: repo-add {{ custom_repo_db }}
+    # TODO: Implement a filter that accepts custom_repo and returns a db path.
+    - name: Create {{ custom_repo.path_prefix }}/{{ custom_repo.name }}/{{ custom_repo.name }}.db.tar.xz
+      command: repo-add {{ custom_repo.path_prefix }}/{{ custom_repo.name }}/{{ custom_repo.name }}.db.tar.xz
       args:
-        creates: '{{ custom_repo_db }}'
-      become_user: '{{ custom_repo_user }}'
+        creates: '{{ custom_repo.path_prefix }}/{{ custom_repo.name }}/{{ custom_repo.name }}.db.tar.xz'
+      become_user: '{{ custom_repos_user }}'
 
-    - name: Create /etc/pacman.d/{{ custom_repo_name }}.conf
+    - name: Create /etc/pacman.d/{{ custom_repo.name }}.conf
       template:
         src: custom-repo.conf
-        dest: /etc/pacman.d/{{ custom_repo_name }}.conf
+        dest: /etc/pacman.d/{{ custom_repo.name }}.conf
       register: result
 
     # If a repository is defined in pacman.conf(5), but that repository has
     # never been synced, then pacman will produce errors. Doing this immediately
     # might not be necessary, but it's a robust solution.
-    - name: Sync repository {{ custom_repo_name }}
-      command: pacman -Sy --config /etc/pacman.d/{{ custom_repo_name }}.conf
+    - name: Sync repository {{ custom_repo.name }}
+      command: pacman -Sy --config /etc/pacman.d/{{ custom_repo.name }}.conf
       when: result is changed
 
   become: true

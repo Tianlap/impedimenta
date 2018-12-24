@@ -1,61 +1,31 @@
-Custom Repository
-=================
+custom-repo
+===========
 
-Create and serve a repository of custom packages.
+Create and serve repositories of custom packages.
 
 When invoked, this role will do the following:
 
 #. Create a privileged system user dedicated to compiling packages.
 #. Install aurutils 2.y.
-#. Create a repository, and list it in pacman.conf(5). It would be better if the
-   latter step could be omitted, but see the `discussion`_ below.
-#. Download and compile several packages, and place them into the repository.
-#. Configure systemd to automatically update the repository.
+#. For each repository definition given by the caller:
+
+   #. Create the repository.
+   #. Download and compile packages, and place them into the repository.
+   #. Configure systemd to automatically update the repository.
 
 The repository and its contents aren't automatically made available. The
 repository must be made available through some other means (such as via nginx).
+If a repository's contents should be protected (e.g. via an htpasswd file), then
+the application which serves the repository is responsible for configuring said
+protection.
 
-.. WARNING:: aurutils is installed via the `aurutils-git`_ package.
-
-Variables
----------
-
-All variables are optional, due to having default values.
-
-``custom_repo_path_prefix``
-    The directory within which the repository will be created.
-
-``custom_repo_name``
-    The name of the repository being created. Consider using a limited set of
-    characters for this name, like ``[a-zA-Z-_]+``, as it will be used when
-    modifying pacman.conf(5), when generating filesystem path names, and more.
-
-``custom_repo_path``
-    The full path to the repository. Derived from ``custom_repo_path_prefix``
-    and ``custom_repo_name``.
-
-``custom_repo_db``
-    The full path to the repository's database file. Derived from
-    ``custom_repo_path``.
-
-``custom_repo_packages``
-    The packages to download, compile, and place in the repository. Defaults to
-    an empty list.
-
-``custom_repo_auto_update``
-    Should the repository's packages automatically be updated when a new AUR
-    package is released?
-
-``custom_repo_user``
-    The privileged system user who compiles packages. Not named
-    ``custom_repo_packager`` because the term "packager" is closely associated
-    with living, breathing human beings who do things like sign off on packages.
-
-``custom_repo_user_home``
-    The privileged system user's home directory.
+.. WARNING:: aurutils is installed via the `aurutils-git`_ package. When
+    aurutils version 2 is released, this can be fixed.
 
 Sample Playbook
 ---------------
+
+Sample usage:
 
 .. code-block:: yaml
 
@@ -63,10 +33,55 @@ Sample Playbook
       roles:
         - name: custom-repo
           vars:
-            custom_repo_name: ichi-public
-            custom_repo_packages:
-              - entr
-              - systemd-boot-pacman-hook
+            custom_repos:
+              - path_prefix: /srv/packages.example.com/arch-linux
+                name: example-public
+                packages:
+                  - entr
+                  - systemd-boot-pacman-hook
+              - path_prefix: /srv/packages.example.com/arch-linux
+                name: example-private
+                packages:
+                  - papers-please-gog
+
+Variables
+---------
+
+The following variables are accepted:
+
+``custom_repos_user``
+    The privileged system user who compiles packages. Not named
+    ``custom_repos_packager`` because the term "packager" is closely associated
+    with living, breathing human beings who do things like sign off on packages.
+    Defaults to ``custom-repo-user``.
+
+    .. WARNING:: The default may change to ``custom-repos-user`` in the future.
+
+``custom_repos_user_home``
+    The privileged system user's home directory. Defaults to ``/usr/local/lib/{{
+    custom_repos_user }}``.
+
+``custom_repos``
+    A list of repository definitions. The following variables may be set in each
+    list element:
+
+    ``path_prefix``
+        The directory within which the repository will be created. **Must be
+        set.** (Sample value: ``/srv/packages.example.com/arch-linux``)
+
+    ``name``
+        The name of the repository being created. Consider using a limited set
+        of characters for this name, like ``[a-zA-Z-_]+``, as it will be used
+        when generating filesystem paths, when generating configuration files,
+        and more. **Must be set.** (Sample value: ``custom``)
+
+    ``packages``
+        The packages to download, compile, and place in the repository. Defaults
+        to an empty list.
+
+    ``auto_update``
+        Should the repository's packages automatically be updated when a new AUR
+        package is released? Defaults to true.
 
 Discussion
 ----------

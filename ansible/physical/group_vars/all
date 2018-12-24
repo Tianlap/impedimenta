@@ -6,35 +6,40 @@ coworkers:
 - kersom
 - ragbalak
 
-custom_repo_path_prefix: /srv/packages.ichimonji10.name/arch-linux
-custom_repo_name: ichi-public
-custom_repo_packages:
-  # dev-env
-  - bandwidth
-  - entr
-  - python-rst2pdf
-  - python36
-  - vim-badwolf-git
-  - vim-hemisu-git
-  - vim-mark
-  - vim-undotree
-  - yamllint
+custom_repos:
+  - path_prefix: /srv/packages.ichimonji10.name/arch-linux
+    name: ichi-public
+    packages:
+      # dev-env
+      - bandwidth
+      - entr
+      - python-rst2pdf
+      - python36
+      - vim-badwolf-git
+      - vim-hemisu-git
+      - vim-mark
+      - vim-undotree
+      - yamllint
 
-  # libvirtd
-  - libguestfs
+      # libvirtd
+      - libguestfs
 
-  # mnemosyne
-  - mnemosyne
+      # mnemosyne
+      - mnemosyne
 
-  # subsonic
-  - subsonic
+      # subsonic
+      - subsonic
 
-  # uefi
-  - systemd-boot-pacman-hook
+      # uefi
+      - systemd-boot-pacman-hook
 
-  # workstation
-  - brother-hll2395dw
-  - brscan4
-  - mnemosyne
-  - ms-sys
-  - zoom
+      # workstation
+      - brother-hll2395dw
+      - brscan4
+      - mnemosyne
+      - ms-sys
+      - zoom
+
+  - path_prefix: /srv/packages.ichimonji10.name/arch-linux
+    name: ichi-private
+    auto_update: false

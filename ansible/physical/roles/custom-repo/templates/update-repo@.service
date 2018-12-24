@@ -8,5 +8,5 @@ After=network-online.target
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/aur sync --upgrades --database %i --chroot --no-view --no-confirm
-User={{ custom_repo_user }}
-Group={{ custom_repo_user }}
+User={{ custom_repos_user }}
+Group={{ custom_repos_user }}

@@ -1,1 +1,1 @@
-{{ custom_repo_user }} ALL=(ALL) NOPASSWD: ALL
+{{ custom_repos_user }} ALL=(ALL) NOPASSWD: ALL

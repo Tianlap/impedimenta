@@ -5,14 +5,14 @@
     pacman:
       name: nginx
 
-  - name: Let nginx access transmission's downloads
+  - name: Let nginx access transmission's files (esp. downloads)
     user:
       name: http
       groups: transmission
       append: true
       create_home: false
 
-  - name: Install htpasswd file for transmission.ichimonji10.name
+  - name: Install htpasswd file for transmission.ichimonji10.name/downloads/
     htpasswd:
       name: admin
       password: '{{ transmission_password }}'
@@ -21,6 +21,17 @@
       group: http
       mode: 0640
     when: transmission_password is defined
+
+  - name: Install htpasswd file for packages.ichimonji10.name/.../ichi-private/
+    htpasswd:
+      name: anonymous
+      password: '{{ nginx_ichi_private_password }}'
+      path: >-
+        /etc/nginx/packages.ichimonji10.name_arch-linux_ichi-private.htpasswd
+      owner: root
+      group: http
+      mode: 0640
+    when: nginx_ichi_private_password is defined
 
   - name: Install nginx configuration file
     copy:
