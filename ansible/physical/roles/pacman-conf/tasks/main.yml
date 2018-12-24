@@ -20,8 +20,8 @@
       - '"webservers" not in group_names'
 
   - name: Install /etc/pacman.conf
-    copy:
-      src: etc/pacman.conf
+    template:
+      src: pacman.conf
       dest: /etc/pacman.conf
     notify: Sync pacman
 
