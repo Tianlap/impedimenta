@@ -17,9 +17,13 @@ When invoked, this role will do the following:
 Variables
 ---------
 
-No variables are supported. Customization is done via mechanisms like file
-templates. This role is not generic across varying environments, and is instead
-tightly bound to the author's target environment.
+This role is not generic across varying environments, and is instead tightly
+bound to the author's target environment. As a result, few variables are
+supported.
+
+``pacman_conf_ichi_private_password``
+    Optional. If omitted, certain tasks are skipped. The password to use when
+    interacting with the ichi-private repository. Also used by the nginx role.
 
 Sample Playbook
 ---------------

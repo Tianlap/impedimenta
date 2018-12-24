@@ -25,4 +25,4 @@ Variables:
 
 * `transmission_password`: Optional. A password that users must provde to
   Transmission to view its web interface. If provided, the Transmission
-  configuration script is installed.
+  configuration script is installed. Also used by the nginx role.

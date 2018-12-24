@@ -28,7 +28,7 @@
   - name: Install htpasswd file for packages.ichimonji10.name/.../ichi-private/
     htpasswd:
       name: anonymous
-      password: '{{ nginx_ichi_private_password }}'
+      password: '{{ pacman_conf_ichi_private_password }}'
       path: >-
         /etc/nginx/{{
           'packages.ichimonji10.name/arch-linux/ichi-private' | systemd_escape
@@ -36,7 +36,7 @@
       owner: root
       group: http
       mode: 0640
-    when: nginx_ichi_private_password is defined
+    when: pacman_conf_ichi_private_password is defined
 
   - name: Install nginx configuration file
     template:
