@@ -1,5 +1,9 @@
 ---
-- name: Sync pacman
+- name: Sync all repositories
   pacman:
     update_cache: true
+  become: true
+
+- name: Sync ichi-public repository
+  command: pacman -Sy --config /etc/pacman.d/ichi-public.conf
   become: true

@@ -14,7 +14,7 @@
     copy:
       src: etc_pacman.d/ichi-public.conf
       dest: /etc/pacman.d/
-    notify: Sync pacman
+    notify: Sync ichi-public repository
     when:
       - '"routers" not in group_names'
       - '"webservers" not in group_names'
@@ -23,7 +23,7 @@
     template:
       src: pacman.conf
       dest: /etc/pacman.conf
-    notify: Sync pacman
+    notify: Sync all repositories
 
   - name: Install reflector
     pacman:
