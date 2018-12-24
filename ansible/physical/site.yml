@@ -1,9 +1,4 @@
 ---
-# Delete older custom repository management code.
-- hosts: all
-  roles:
-  - aur
-
 # Make custom packages available to subsequent roles.
 - hosts: webservers
   roles:

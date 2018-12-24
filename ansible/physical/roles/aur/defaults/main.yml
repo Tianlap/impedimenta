@@ -1,3 +1,0 @@
----
-aur_user: aur-packager
-aur_user_home: /usr/local/lib/{{ aur_user }}
