@@ -23,6 +23,7 @@
         - git
         - graphviz
         - ipv6calc
+        - mypy
         - namcap
         - pacman-contrib
         - python-docutils  # for rst2html
