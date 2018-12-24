@@ -22,7 +22,7 @@
         --no-confirm
         --no-view
         {{ custom_repo_package }}
-    become_user: '{{ custom_repo_user }}'
+    become_user: '{{ custom_repos_user }}'
 
   - name: Sync repository {{ custom_repo.name }}
     command: pacman -Sy --config /etc/pacman.d/{{ custom_repo.name }}.conf

@@ -13,7 +13,7 @@
 
 - name: Install aurutils from the AUR
   script: install-aurutils.sh
-  become_user: '{{ custom_repo_user }}'
+  become_user: '{{ custom_repos_user }}'
   when: result.rc != 0
   register: result
   become: true
