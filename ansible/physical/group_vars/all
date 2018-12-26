@@ -12,7 +12,6 @@ custom_repos:
     packages:
       # dev-env role
       - bandwidth
-      - entr
       - python-rst2pdf
       - python36
       - vim-badwolf-git
