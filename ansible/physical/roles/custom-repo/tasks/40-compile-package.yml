@@ -18,6 +18,7 @@
   - name: Compile package {{ custom_repo_package }}
     command: >
       aur sync
+        --chroot
         --database {{ custom_repo.name }}
         --no-confirm
         --no-view
