@@ -10,7 +10,7 @@ custom_repos:
   - path_prefix: /srv/packages.ichimonji10.name/arch-linux
     name: ichi-public
     packages:
-      # dev-env
+      # dev-env role
       - bandwidth
       - entr
       - python-rst2pdf
@@ -21,19 +21,19 @@ custom_repos:
       - vim-undotree
       - yamllint
 
-      # libvirtd
+      # libvirtd role
       - libguestfs
 
-      # mnemosyne
+      # mnemosyne role
       - mnemosyne
 
-      # subsonic
+      # subsonic role
       - subsonic
 
-      # uefi
+      # uefi role
       - systemd-boot-pacman-hook
 
-      # workstation
+      # workstation role
       - brother-hll2395dw
       - brscan4
       - mnemosyne
