@@ -24,28 +24,19 @@ Example playbook:
 
     - hosts: borg-backup-users-hosts
       roles:
-      - borg-backup-users
-
-Example variables file:
-
-.. code-block:: yaml
-
-    borg_backup_users:
-    - local_user: alice
-      local_paths:
-      - ~/Documents
-      - ~/'my other stuff'
-      remote_host: borg-host.example.com
-      remote_user: borg-user
-
-Example private variables file:
-
-.. code-block:: yaml
-
-    borg_backup_users_passphrases:
-      alice: password
-    borg_backup_users_private_keys:
-      alice: /path/to/key
+        - borg-backup-users
+      vars:
+        borg_backup_users_passphrases:
+          alice: password
+        borg_backup_users_private_keys:
+          alice: /path/to/key
+        borg_backup_users:
+          - local_user: alice
+            local_paths:
+              - ~/Documents
+              - ~/'my other stuff'
+            remote_host: borg-host.example.com
+            remote_user: borg-user
 
 Variables:
 
