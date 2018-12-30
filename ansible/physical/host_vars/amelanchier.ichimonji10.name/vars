@@ -2,6 +2,8 @@ dnsmasq_lan_if: enp2s0
 dnsmasq_dmz_if: enp3s0
 dnsmasq_wlan_if: wlp4s0
 
+dynamic_dns_urls: '{{ vault_dynamic_dns_urls }}'
+
 hostapd_wlan_if: wlp4s0
 
 netctl_routers_wan_if: enp1s0

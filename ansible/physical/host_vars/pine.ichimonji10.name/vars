@@ -1,3 +1,4 @@
+---
 borg_backup_system_local_paths:
 - /var/local/subsonic/backups
 borg_backup_system_remote_host: usw-s001.rsync.net
@@ -17,6 +18,8 @@ btrfs_subvolumes:
 - path: '{{ btrfs_path }}/var/lib/transmission'
   days: 5
   weeks: 2
+
+dynamic_dns_urls: '{{ vault_dynamic_dns_urls }}'
 
 netctl_generic_external_if: enp2s0
 
