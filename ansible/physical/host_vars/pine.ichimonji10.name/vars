@@ -1,9 +1,4 @@
 ---
-borg_backup_system_local_paths:
-- /var/local/subsonic/backups
-borg_backup_system_remote_host: usw-s001.rsync.net
-borg_backup_system_remote_user: 1025
-
 btrfs_path: /mnt/btrfs
 btrfs_subvolumes:
 - path: '{{ btrfs_path }}/home'

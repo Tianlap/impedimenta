@@ -21,23 +21,14 @@ Example playbook:
 
 .. code-block:: yaml
 
-    - hosts: borg-backup-system-hosts
+    - hosts: all
       roles:
-      - borg-backup-system
-
-Example variables file:
-
-.. code-block:: yaml
-
-    borg_backup_system_local_paths:
-    - /var/local/subsonic/backups
-
-Example private variables file:
-
-.. code-block:: yaml
-
-    borg_backup_system_passphrase: pass
-    borg_backup_system_private_key: /path/to/key
+        - borg-backup-system
+      vars:
+        borg_backup_system_local_paths:
+          - /var/local/subsonic/backups
+        borg_backup_system_passphrase: pass
+        borg_backup_system_private_key: /path/to/key
 
 Variables:
 
