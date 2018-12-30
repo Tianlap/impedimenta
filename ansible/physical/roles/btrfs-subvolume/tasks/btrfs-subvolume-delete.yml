@@ -56,5 +56,5 @@
 
   when:
     - item.delete is defined
-    - item.delete == false
+    - not item.delete
   become: true
