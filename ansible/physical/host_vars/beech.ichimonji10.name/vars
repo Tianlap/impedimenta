@@ -14,4 +14,11 @@ btrfs_paths:
   - /mnt/btrfs
 
 syncthing_usernames:
-- ichimonji10
+  - ichimonji10
+
+workstation_video_drivers:
+  # https://wiki.archlinux.org/index.php/Hardware_video_acceleration
+  - mesa-vdpau
+  - xf86-video-amdgpu
+  # https://wiki.archlinux.org/index.php/Steam
+  - lib32-mesa

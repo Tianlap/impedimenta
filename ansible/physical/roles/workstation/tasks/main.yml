@@ -1,21 +1,9 @@
 ---
 - block:
 
-  # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-  - name: Install video driver (beech)
+  - name: Install video drivers
     pacman:
-      name:
-        - mesa-vdpau
-        - xf86-video-amdgpu
-    when: "inventory_hostname == 'beech.ichimonji10.name'"
-
-  # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-  - name: Install video driver (tupelo)
-    pacman:
-      name:
-        - mesa-vdpau
-        - xf86-video-amdgpu
-    when: "inventory_hostname == 'tupelo.ichimonji10.name'"
+      name: '{{ workstation_video_drivers }}'
 
   - name: Uninstall unused packages
     pacman:
@@ -69,6 +57,7 @@
         - qt4  # for vlc
         - simple-scan
         - sshfs
+        - steam
         - system-config-printer
         - texlive-core  # for mnemosyne
         - ttf-dejavu
