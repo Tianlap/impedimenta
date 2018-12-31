@@ -1,7 +1,7 @@
 coworkers
 =========
 
-Create user accounts for coworkers.
+Delete user accounts.
 
 Variables:
 

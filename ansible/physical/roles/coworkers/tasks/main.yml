@@ -1,3 +1,7 @@
 ---
-- include_tasks: create-coworker.yml
+- name: Delete coworkers' accounts
+  user:
+    name: '{{ item }}'
+    state: absent
+    remove: true
   loop: '{{ coworkers }}'
