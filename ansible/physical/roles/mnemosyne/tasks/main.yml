@@ -19,75 +19,29 @@
         shell: /usr/bin/nologin
       notify: Lock password
 
-  become: true
+    - name: Install mnemosyne-sync-server.service
+      template:
+        src: mnemosyne-sync-server.service
+        dest: /etc/systemd/system/
 
-- name: Get {{ mnemosyne_user }} lingering state
-  command: loginctl --property Linger --value show-user {{ mnemosyne_user }}
-  changed_when: false
-  check_mode: false
-  failed_when: false
-  register: result
-
-# The mnemosyne sync service was initially implemented as a --user service. We
-# need to make sure that that service and supporting services are not running
-# before proceeding.
-- block:
-
-    - name: Delete {{ mnemosyne_user_home }}/.config/systemd/user/
-      file:
-        path: '{{ mnemosyne_user_home }}/.config/systemd/user/'
-        state: absent
-
-    - name: Disable lingering for {{ mnemosyne_user }}
-      command: loginctl disable-linger {{ mnemosyne_user }}
-      when: result.stdout == 'yes'
-
-  become: true
-  become_user: '{{ mnemosyne_user }}'
-
-- name: Install mnemosyne-sync-server.service
-  template:
-    src: mnemosyne-sync-server.service
-    dest: /etc/systemd/system/
-  become: true
-
-- name: Start and enable mnemosyne-sync-server.service
-  systemd:
-    name: mnemosyne-sync-server.service
-    state: started
-    enabled: true
-    daemon_reload: true
-  become: true
-
-# We can't do this until mnemosyne has run at least once. As a future
-# improvement, this should only be done if mnemosyne_sync_{username,password}
-# are defined and differ from what are in the database. This will enable
-# idempotence.
-- block:
-
-    - name: Stop the mnemosyne sync server
+    - name: Start and enable mnemosyne-sync-server.service
       systemd:
         name: mnemosyne-sync-server.service
-        state: stopped
-        user: true
+        state: started
+        enabled: true
+        daemon_reload: true
 
-    # This is a kludge. It's be nice if mnemosyne supported a better method for
-    # setting the sync server's username and password.
-    - name: Set the mnemosyne sync server username and password
-      script: >
-        set-sync-credentials.py
-        {{ mnemosyne_user_home }}/.config/mnemosyne/config.db
-        {{ mnemosyne_sync_username }}
-        {{ mnemosyne_sync_password }}
-      become: true
+    # Mnemosyne's database must be initialized before mnemosyne_credentials can
+    # operate on it. That is why we start and enable the service before
+    # executing this task.
+    - name: Set mnemosyne's sync server credentials
+      mnemosyne_credentials:
+        username: '{{ mnemosyne_sync_username }}'
+        password: '{{ mnemosyne_sync_password }}'
       become_user: '{{ mnemosyne_user }}'
+      notify: Restart mnemosyne sync server
+      when:
+        - mnemosyne_sync_username is defined
+        - mnemosyne_sync_password is defined
 
-    - name: Start the mnemosyne sync server
-      systemd:
-        name: mnemosyne-sync-server.service
-        state: stopped
-        user: true
-
-  when:
-    - mnemosyne_sync_username is defined
-    - mnemosyne_sync_password is defined
+  become: true
