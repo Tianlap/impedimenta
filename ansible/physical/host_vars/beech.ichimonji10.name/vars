@@ -10,7 +10,8 @@ borg_backup_users:
     remote_host: usw-s001.rsync.net
     remote_user: 1025
 
-btrfs_path: /mnt/btrfs
+btrfs_paths:
+  - /mnt/btrfs
 
 syncthing_usernames:
 - ichimonji10

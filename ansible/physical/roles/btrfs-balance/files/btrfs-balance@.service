@@ -8,5 +8,5 @@ Description=Start a btrfs balance
 # apply to the main process' exit code. Ignoring all error codes (with -) is a
 # kludge.
 [Service]
-ExecStart=/usr/bin/btrfs balance start --full-balance '{{ btrfs_path }}'
-ExecStop=-/usr/bin/btrfs balance cancel '{{ btrfs_path }}'
+ExecStart=/usr/bin/btrfs balance start --full-balance %f
+ExecStop=-/usr/bin/btrfs balance cancel %f

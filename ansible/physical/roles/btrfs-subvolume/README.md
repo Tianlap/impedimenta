@@ -16,16 +16,13 @@ Example playbook:
   roles:
   - name: btrfs-subvolume
     vars:
-      btrfs_path: /mnt/btrfs
       btrfs_subvolumes:
-      - {path: home}
-      - {path: srv/ftp, days: 5, weeks: 2}
+      - {path: /mnt/btrfs/home}
+      - {path: /mnt/btrfs/srv/ftp, days: 5, weeks: 2}
 ```
 
 Variables:
 
-* `btrfs_path` Required. The path to some directory the btrfs filesystem to
-  manage.
 * `btrfs_subvolumes` Optional, defaults to an empty list. A list of objects,
   where each object contains some information about a subvolume to manage. The
   following attributes may appear in each object. If empty, only a few

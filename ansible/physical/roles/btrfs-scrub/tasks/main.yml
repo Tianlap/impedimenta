@@ -8,9 +8,10 @@
 
   - name: Enable periodic btrfs scrubs
     systemd:
-      name: btrfs-scrub@{{ btrfs_path | systemd_escape }}.timer
+      name: btrfs-scrub@{{ item | systemd_escape }}.timer
       state: started
       enabled: true
       daemon_reload: true
+    loop: '{{ btrfs_paths }}'
 
   become: true

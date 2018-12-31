@@ -1,16 +1,17 @@
 ---
-btrfs_path: /mnt/btrfs
+btrfs_paths:
+  - /mnt/btrfs
 btrfs_subvolumes:
-- path: '{{ btrfs_path }}/home'
-- path: '{{ btrfs_path }}/root'
+- path: '{{ btrfs_path[0] }}/home'
+- path: '{{ btrfs_path[0] }}/root'
   days: 5
   weeks: 2
   snapshot: false
-- path: '{{ btrfs_path }}/srv/subsonic'
+- path: '{{ btrfs_path[0] }}/srv/subsonic'
   days: 5
   weeks: 2
   snapshot: false
-- path: '{{ btrfs_path }}/var/lib/transmission'
+- path: '{{ btrfs_path[0] }}/var/lib/transmission'
   days: 5
   weeks: 2
 

@@ -6,19 +6,34 @@
       name: btrfs-progs
       state: present
 
-  - name: Install units for starting btrfs balances
-    template:
-      src: '{{ item }}'
-      dest: /etc/systemd/system/{{ item }}
+  - name: Delete outdated units for btrfs balances
+    file:
+      path: /etc/systemd/system/{{ item }}
+      state: absent
     loop:
       - btrfs-balance.service
       - btrfs-balance.timer
+    register: result
+
+  - name: Reload systemd
+    systemd:
+      daemon_reload: true
+    when: result is changed
+
+  - name: Install units for btrfs balances
+    copy:
+      src: '{{ item }}'
+      dest: /etc/systemd/system/{{ item }}
+    loop:
+      - btrfs-balance@.service
+      - btrfs-balance@.timer
 
   - name: Start and enable timer for starting btrfs balances
     systemd:
-      name: btrfs-balance.timer
+      name: btrfs-balance@{{ item | systemd_escape }}.timer
       state: started
       enabled: true
       daemon_reload: true
+    loop: '{{ btrfs_paths }}'
 
   become: true
