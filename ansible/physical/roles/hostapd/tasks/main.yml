@@ -15,8 +15,11 @@
         mode: 0600
       notify: Restart hostapd
       when:
-        - hostapd_passphrase is defined
-        - hostapd_wlan_if is defined
+        - hostapd_insecure_if is defined
+        - hostapd_insecure_name is defined
+        - hostapd_secure_if is defined
+        - hostapd_secure_name is defined
+        - hostapd_secure_passphrase is defined
 
     - name: Install hostapd override file
       copy:
@@ -27,7 +30,7 @@
       template:
         src: wlan-secure.service
         dest: /etc/systemd/system/
-      when: hostapd_wlan_if is defined
+      when: hostapd_secure_if is defined
 
     - name: Start and enable hostapd
       systemd:
