@@ -8,8 +8,8 @@ During configuration, the wireless regulatory domain is set.
 Example Playbook
 ----------------
 
-```yaml
-- hosts: all
-  roles:
-    - crda
-```
+.. code-block:: yaml
+
+    - hosts: all
+      roles:
+        - crda
