@@ -22,9 +22,12 @@
 
   - name: Install routing configuration scripts
     copy:
-      src: usr_local_bin/
-      dest: /usr/local/bin/
+      src: usr_local_bin/{{ item }}
+      dest: /usr/local/bin/{{ item }}
       mode: 0755
+    loop:
+      - openvpn-route-pre-down.sh
+      - openvpn-route-up.sh
 
   - name: Define the priority of the "tunnel" routing table
     blockinfile:

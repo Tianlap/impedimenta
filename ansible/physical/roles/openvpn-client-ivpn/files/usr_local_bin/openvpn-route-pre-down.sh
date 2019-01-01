@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# coding=utf-8
 #
 # Tear down rules which implement split routing based on source IP. This
 # script should be called by openvpn's `--route-pre-down` option.
