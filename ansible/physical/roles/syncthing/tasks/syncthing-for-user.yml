@@ -35,7 +35,7 @@
     name: syncthing.service
     state: started
     enabled: true
-    user: true
+    scope: user
     daemon_reload: true
   environment:
     XDG_RUNTIME_DIR: /run/user/{{ getent_passwd[item][1] }}

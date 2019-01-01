@@ -72,7 +72,7 @@
         name: borg-backup.timer
         state: started
         enabled: true
-        user: true
+        scope: user
         daemon_reload: true
       environment:
         XDG_RUNTIME_DIR: /run/user/{{ borg_backup_user_id }}
