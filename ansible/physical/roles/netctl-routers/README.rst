@@ -13,10 +13,20 @@ following:
    systemd service file. (This includes initial installation.)
 3. Start and enable each of the systemd services.
 
-Required variables:
+Netctl isn't capable of configuring logical interfaces. Consequently, arguments
+should only reference physical interfaces.
 
-* `netctl_routers_wan_if`: The name of the WAN network interface.
-* `netctl_routers_dmz_if`: The name of the DMZ network interface.
-* `netctl_routers_lan_if`: The name of the LAN network interface.
-* `netctl_routers_wlan_if`: The name of the WLAN network interface. Netctl will
-  be configured to handle both this interface and this interface + `_secure`.
+Variables:
+
+``netctl_routers_wan_if``
+    The name of the WAN network interface.
+
+``netctl_routers_dmz_if``
+    The name of the DMZ network interface.
+
+``netctl_routers_lan_if``
+    The name of the LAN network interface.
+
+``netctl_routers_wlan_if``
+    The name of a WLAN network interface. (An insecure WAP will be partially
+    created.)

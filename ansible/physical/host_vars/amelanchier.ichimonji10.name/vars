@@ -19,4 +19,5 @@ netctl_routers_wlan_if: wlp4s0
 nftables_routers_dmz_if: enp3s0
 nftables_routers_lan_if: enp2s0
 nftables_routers_wan_if: enp1s0
-nftables_routers_wlan_if: wlp4s0
+nftables_routers_insecure_wlan_if: wlp4s0
+nftables_routers_secure_wlan_if: '{{ nftables_routers_insecure_wlan_if }}_secure'
