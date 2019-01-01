@@ -39,40 +39,4 @@
         enabled: true
         daemon_reload: true
 
-    # This task cleans up after legacy configurations.
-    - name: Disable wlan-secure.service
-      systemd:
-        name: wlan-secure.service
-        enabled: false
-        daemon_reload: true
-
-  become: true
-
-# The following tasks all clean up after legacy configurations.
-- name: Check whether unit file exists
-  stat:
-    path: /etc/systemd/system/{{ item }}
-  loop:
-    - log-entropy.service
-    - log-entropy.timer
-  register: result
-
-- block:
-
-    - name: Stop and disable units for logging entropy
-      systemd:
-        name: '{{ item.item }}'
-        state: stopped
-        enabled: false
-      when: item.stat.exists
-      loop: '{{ result.results }}'
-
-    - name: Delete unit files for logging entropy
-      file:
-        path: /etc/systemd/system/{{ item.item }}
-        state: absent
-      when: item.stat.exists
-      loop: '{{ result.results }}'
-      notify: Reload systemd
-
   become: true
