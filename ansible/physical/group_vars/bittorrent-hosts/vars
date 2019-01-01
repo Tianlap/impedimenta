@@ -1,0 +1,2 @@
+---
+transmission_password: '{{ vault_transmission_password }}'

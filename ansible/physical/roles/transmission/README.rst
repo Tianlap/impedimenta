@@ -21,8 +21,10 @@ When executed, this role will do the following:
    starts.
 4. Start and enable Transmission.
 
-Variables:
+Variables
+---------
 
-* `transmission_password`: Optional. A password that users must provde to
-  Transmission to view its web interface. If provided, the Transmission
-  configuration script is installed. Also used by the nginx role.
+``transmission_password``
+    A password that users must provde to Transmission to view its web interface.
+    If provided, the Transmission configuration script is installed. Also used
+    by the nginx role. Optional, but if omitted, certain tasks will be skipped.
