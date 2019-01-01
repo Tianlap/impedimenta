@@ -21,9 +21,9 @@ This role is not generic across varying environments, and is instead tightly
 bound to the author's target environment. As a result, few variables are
 supported.
 
-``pacman_conf_ichi_private_password``
-    Optional. If omitted, certain tasks are skipped. The password to use when
-    interacting with the ichi-private repository. Also used by the nginx role.
+``pacman_conf_repo_passwords``
+    A dict mapping repository names to passwords for accessing them. Defaults to
+    an empty dict.
 
 Sample Playbook
 ---------------

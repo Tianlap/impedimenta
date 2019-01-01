@@ -46,3 +46,5 @@ custom_repos:
   - path_prefix: /srv/packages.ichimonji10.name/arch-linux
     name: ichi-private
     auto_update: false
+
+pacman_conf_repo_passwords: '{{ vault_pacman_conf_repo_passwords }}'

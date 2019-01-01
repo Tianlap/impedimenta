@@ -25,7 +25,7 @@
       dest: /etc/pacman.d/
     when:
       - '"workstations" in group_names'
-      - pacman_conf_ichi_private_password is defined
+      - '"ichi-private" in pacman_conf_repo_passwords'
 
   - name: Install /etc/pacman.d/ichi-private.conf
     copy:
