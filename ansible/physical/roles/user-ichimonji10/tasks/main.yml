@@ -20,12 +20,6 @@
     user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['uucp'] }}"
   when: "'workstations' in group_names"
 
-# For the borg-backup role.
-- name: Append "ichi-machines" to the list of groups
-  set_fact:
-    user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['ichi-machines'] }}"
-  when: "inventory_hostname == 'pine.ichimonji10.name'"
-
 - name: Create ichimonji10
   user:
     name: ichimonji10

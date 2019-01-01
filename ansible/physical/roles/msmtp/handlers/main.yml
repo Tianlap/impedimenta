@@ -1,4 +1,0 @@
----
-- name: Set install reason for packages
-  command: 'pacman -D --asdeps msmtp-mta'
-  become: true

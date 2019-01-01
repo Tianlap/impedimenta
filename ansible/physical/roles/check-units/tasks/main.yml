@@ -1,9 +1,18 @@
 ---
-- include_tasks: system.yml
-  when: check_units_users is undefined
+- block:
 
-# If `loop:` is used to iterate over a list, and if that list contains only one
-# element, then the list itself is passed to the target block.
-- include_tasks: user.yml
-  when: check_units_users is defined
-  with_items: '{{ check_units_users }}'
+  - name: Delete check-units.{timer,service}
+    file:
+      path: /etc/systemd/system/check-units.{{ item }}
+      state: absent
+    loop:
+      - timer
+      - service
+    notify: Reload systemd
+
+  - name: Delete check-units.sh
+    file:
+      path: /usr/local/bin/check-units.sh
+      state: absent
+
+  become: true

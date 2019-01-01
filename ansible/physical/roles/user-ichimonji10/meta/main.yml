@@ -3,7 +3,6 @@
 # The essential-apps role installs tools referenced by various config files.
 # The group-wheel role configures the "wheel" group.
 # The libvirtd role creates the libvirt group.
-# The msmtp role creates the ichi-machines group.
 # The workstation role creates the uucp group when installing picocom.
 dependencies:
   - role: dev-env
@@ -12,7 +11,5 @@ dependencies:
   - role: group-wheel
   - role: libvirtd
     when: "'vm-hosts' in group_names"
-  - role: msmtp
-    when: "inventory_hostname == 'pine.ichimonji10.name'"
   - role: workstation
     when: "'workstations' in group_names"

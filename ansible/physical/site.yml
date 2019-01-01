@@ -13,6 +13,7 @@
   - intel-ucode
   - lm-sensors
   - locale
+  - msmtp
   - pacman-conf
   - pkgfile
   - smartd
