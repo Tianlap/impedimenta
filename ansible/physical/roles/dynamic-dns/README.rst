@@ -11,6 +11,6 @@ Variables:
 ``dynamic_dns_urls``
     A list of URL to periodically make HTTP GET calls to. Each call to a URL
     should be enough to update a dynamic DNS record, assuming a service like
-    `FreeDNS`_ is in use.
+    `FreeDNS`_ is in use. Defaults to an empty list.
 
 .. _FreeDNS: https://freedns.afraid.org/

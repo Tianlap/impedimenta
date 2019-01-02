@@ -6,30 +6,31 @@
       name: curl
       state: present
 
+  - name: Delete outdated script to update dynamic DNS
+    file:
+      path: /usr/local/bin/dynamic-dns
+      state: absent
+
   - name: Install script to update dynamic DNS
     template:
-      src: dynamic-dns
-      dest: /usr/local/bin/dynamic-dns
+      src: dynamic-dns.sh
+      dest: /usr/local/bin/dynamic-dns.sh
       mode: 0700
     when: dynamic_dns_urls is defined
 
   - name: Install units for updating dynamic DNS
     copy:
-      src: etc_systemd_system/
-      dest: /etc/systemd/system/
+      src: '{{ item }}'
+      dest: /etc/systemd/system/{{ item }}
+    loop:
+      - dynamic-dns.service
+      - dynamic-dns.timer
+
+  - name: Start and enable timer for updating dynamic DNS
+    systemd:
+      name: dynamic-dns.timer
+      state: started
+      enabled: true
+      daemon_reload: true
 
   become: true
-
-- name: Check whether /usr/local/bin/dynamic-dns exists
-  stat:
-    path: /usr/local/bin/dynamic-dns
-  register: result
-
-- name: Start and enable timer for updating dynamic DNS
-  systemd:
-    name: dynamic-dns.timer
-    state: started
-    enabled: true
-    daemon_reload: true
-  become: true
-  when: result.stat.exists
