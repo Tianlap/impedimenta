@@ -19,6 +19,7 @@
         - bandwidth
         - cmark
         - ctags
+        - desktop-file-utils
         - entr
         - git
         - graphviz
