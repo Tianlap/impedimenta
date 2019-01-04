@@ -41,6 +41,7 @@ custom_repos:
       - zoom
 
       # not used by any role, for manual usage
+      - binkplayer-bin
       - lgogdownloader
 
   - path_prefix: /srv/packages.ichimonji10.name/arch-linux
