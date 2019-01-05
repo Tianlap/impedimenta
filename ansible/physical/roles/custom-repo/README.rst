@@ -284,28 +284,37 @@ Given the small number of games that I'm interested in playing at any given
 time, and given how infrequent updates can be, manually packaging them seems
 like a better strategy.
 
-Here's an example of the commands that could be used to package gog-transistor.
-(The example is incomplete due to a reCAPTCHA blocking the ``lgogdownloader
---login`` command.)
+Here's a slightly trimmed down example of the concrete commands that could be
+used to package gog-pyre:
 
 .. code-block:: sh
 
-    aur fetch gog-transistor
-    cat gog-transistor/PKGBUILD  # get gog://… URL
+    # download
     lgogdownloader --login
-    lgogdownloader \
-        --download-file 'gog://…'
-    cd gog-transistor
-    ln ../…
-    extra-x86_64-build
+    lgogdownloader --list-details --game pyre
+    lgogdownloader --download-file 'pyre/en3installer0'
+
+    # package
+    aur fetch gog-pyre
+    cd gog-pyre
+    ln ../pyre_1_50427_11957_23366.sh
+    cat PKGBUILD  # read dependencies
+    sudo pacman -Sw binkplayer-bin
+    makechrootpkg \
+        -c \
+        -I /var/cache/pacman/pkg/binkplayer-bin-2.7J-1-x86_64.pkg.tar.xz \
+        -r /var/lib/archbuild/extra-x86_64/
+
+    # manually add to repo
     sudo install \
-        -m644 \
+        -m 644 \
         -o custom-repo-user \
         -g custom-repo-user \
-        … \
-        /srv/packages.example.com/arch-linux/custom/
-    cd /srv/packages.example.com/arch-linux/custom/
-    sudo -u custom-repo-user repo-add custom.db.tar.xz gog-transistor-*
+        gog-pyre-1.50427.11957.23366-1-x86_64.pkg.tar.xz \
+        /srv/packages.ichimonji10.name/arch-linux/ichi-private/
+    cd /srv/packages.ichimonji10.name/arch-linux/ichi-private/
+    sudo -u custom-repo-user repo-add ichi-private.db.tar.xz \
+        gog-pyre-1.50427.11957.23366-1-x86_64.pkg.tar.xz
 
 .. _aurutils-git: https://aur.archlinux.org/packages/aurutils-git/
 .. _gog api documentation: https://gogapidocs.readthedocs.io/en/latest/index.html
